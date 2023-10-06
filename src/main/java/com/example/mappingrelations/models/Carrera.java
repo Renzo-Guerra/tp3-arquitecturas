@@ -24,6 +24,7 @@ public class Carrera {
     @Cascade(CascadeType.DELETE_ORPHAN)
     private List<Inscripcion> inscripciones;
 
+    // constructor
     public Carrera(String nombre){
         this.nombre = nombre;
         this.inscripciones = new ArrayList<>();
