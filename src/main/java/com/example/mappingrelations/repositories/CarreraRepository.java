@@ -32,12 +32,16 @@ public interface CarreraRepository extends CrudRepository<Carrera, Long> {
                 FROM Inscripcion i
                 JOIN Carrera c ON i.id.id_carrera_pk = c.id
                 WHERE i.anio_graduacion IS NULL
-                GROUP BY i.id.id_carrera_pk
+                GROUP BY i.id.id_carrera_pk, count(i.id.id_estudiante_pk)
+                ORDER BY count(i.id.id_estudiante_pk)
             """)
     Iterable<Carrera> traerCarrerasConInscriptos();
 
-    @Query("UPDATE Inscripcion i " +
-            "SET i.anio_graduacion =: anio_graduacion " +
-            "WHERE i.id.id_carrera_pk =: id_carrera AND i.id.id_estudiante_pk =: id_estudiante")
+    @Query("""
+            UPDATE Inscripcion i
+            SET i.anio_graduacion =: anio_graduacion
+            WHERE i.id.id_carrera_pk =: id_carrera AND i.id.id_estudiante_pk =: id_estudiante
+            """
+    )
     Inscripcion updateGraduacion(long id_estudiante, long id_carrera, Integer anio_graduacion);
 }
